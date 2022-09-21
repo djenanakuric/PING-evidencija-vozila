@@ -49,7 +49,14 @@ const travelApplication = () => {
                 <TableCell align="center">{row.end_position}</TableCell>
                 <TableCell align="center">{row.name_of_driver}</TableCell>
                 <TableCell align="center">{row.num_pass}</TableCell>
-                <TableCell align="center">{row.acc}</TableCell>
+                <TableCell align="center">
+                    <select name="action-type" id="evident">
+                        <option value="evidentiran">Evidentiran</option>
+                        <option value="potvrdjen">Potvrđen</option>
+                        <option value="zavrsen">Završen</option>
+                        <option value="odbijen">Odbijen</option>
+                    </select>
+                </TableCell>
 
               </TableRow>
             ))}

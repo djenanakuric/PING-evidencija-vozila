@@ -47,6 +47,12 @@ const carInfo = () => {
                 <TableCell align="center">{row.power_of_motor}</TableCell>
                 <TableCell align="center">{row.type_fuel}</TableCell>
                 <TableCell align="center">{row.year_manuf}</TableCell>
+                <TableCell align="center">
+                    <button>Izmijeni</button>
+                    <button>Obrisi</button>
+                    <button>Rezervisi</button>
+                </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
