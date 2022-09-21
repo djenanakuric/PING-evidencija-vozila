@@ -5,7 +5,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import {useState} from 'react';
+import ModalTravelApplication from './Modal/modal TravelApplication';
 
 function createData(start_date, end_date, start_position, end_position, name_of_driver, num_pass, acc) {
     return { start_date, end_date, start_position, end_position, name_of_driver, num_pass, acc };
@@ -14,10 +15,15 @@ function createData(start_date, end_date, start_position, end_position, name_of_
 const rows = [
 createData('12.04.2022 - 12:00', '12.04.2022 - 18:00', 'Sarajevo', 'Mostar', 'Ivica Ivic', '2', 'evidentiran')
 ]
-const travelApplication = () => {
+const TravelApplication = () => {
+  const [show, setShow] = useState(false);
     return(
         <div>
             <h1>Informacije o putnim nalozima</h1>
+            <button className='add' onClick={() => setShow(true)}>
+                <img className='add-button' src='./images/plus.svg' />
+            </button>
+            <ModalTravelApplication onClose={ () => setShow(false)} show = {show} />
             <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -40,7 +46,7 @@ const travelApplication = () => {
                 <TableCell component="th" scope="row">
                   {row.start_date}
                 </TableCell>
-                <TableCell align="center">{row.end_date}</TableCell>
+                <TableCell align="center">{row.end_date}</TableCell> 
                 <TableCell align="center">{row.start_position}</TableCell>
                 <TableCell align="center">{row.end_position}</TableCell>
                 <TableCell align="center">{row.name_of_driver}</TableCell>
@@ -63,4 +69,4 @@ const travelApplication = () => {
     )
 }
 
-export default travelApplication;
+export default TravelApplication;

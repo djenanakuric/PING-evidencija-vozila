@@ -16,6 +16,10 @@ code {
   height: 3.5rem;
   width: 13rem;
   object-fit: none;
+  float: right;
+  margin: 20px;
+  display: table-cell;
+  vertical-align: top;
   
 }
 
