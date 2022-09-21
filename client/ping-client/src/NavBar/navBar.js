@@ -30,7 +30,8 @@ const navBar = () => {
                 </ul>  
             </div> 
             <Routes>
-                    <Route exact path="/vozilo" element={<CarInfo/>} />
+                    <Route path="/" element={<CarInfo/>} />
+                    <Route path="/vozilo" element={<CarInfo/>} />
                     <Route exact path="/putni-nalog" element={<TravelApplication/>} />
                     <Route exact path="/izvjestaj" element={<Report/>} /> 
             </Routes>
