@@ -2,10 +2,11 @@ import React from 'react';
 import './index.css';
 import 'boxicons/css/boxicons.min.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import CarInfo from './Content/carInfo';
-import TravelApplication from './Content/travelApplication';
-import Report from './Content/report';
+import CarInfo from './Components/Car';
+import TravelApplication from './Components/TravelApplication';
+import Report from './Components/Report';
 import AppLayout from './Components/Layout';
+
 
 function App() {
   return (
