@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { Form, Button, Col, Row, InputGroup } from 'react-bootstrap';
 
-const AddCarModal = ({ isOpen, setIsOpen }) => {
+const AddCarModal = ({ isOpen, setIsOpen }, carInfo={}) => {
   const closeModal = () => {
     setIsOpen(false);
   };

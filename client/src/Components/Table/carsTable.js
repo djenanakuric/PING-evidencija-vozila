@@ -7,8 +7,15 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
+import './style.css'
 
 const CarsTable = () => {
+
+const editCarData = (car) => {
+  console.log('Uslo u edit');
+  
+}
+
   function createData(
     car_name,
     type_of_car,
@@ -64,9 +71,9 @@ const CarsTable = () => {
                 <TableCell align="center">{row.type_fuel}</TableCell>
                 <TableCell align="center">{row.year_manuf}</TableCell>
                 <TableCell align="center">
-                  <i class="bx bx-edit-alt"></i>
-                  <i class="bx bx-trash"></i>
-                  <i class='bx bx-check' ></i>
+                  <i className="bx bx-edit-alt" onClick={() => editCarData(row)}></i>
+                  <i className="bx bx-trash"></i>
+                  <i className='bx bx-check' ></i>
                 </TableCell>
               </TableRow>
             ))}
