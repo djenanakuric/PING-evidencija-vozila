@@ -8,7 +8,11 @@ import {
   Paper,
 } from '@mui/material';
 
+import {useSelector, useDispatch} from 'react-redux';
+import { selectAllCars } from '../../Redux/CarsSlice';
+
 const CarsTable = () => {
+
   function createData(
     car_name,
     type_of_car,
@@ -31,7 +35,34 @@ const CarsTable = () => {
 
   const rows = [
     createData('Citroen', 'C5', '123456', 'a52s', '15 kW', 'dizel', '2012'),
-  ];
+  ]; 
+  /* 
+  const cars1 = useSelector(selectAllCars);
+  console.log(cars1);
+  
+  const renderedCars = cars1.map(car => (
+    <TableRow
+                key={car.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {car.carModel}
+                </TableCell>
+                <TableCell align="center">{car.carType}</TableCell>
+                <TableCell align="center">{car.carNumber}</TableCell>
+                <TableCell align="center">{car.motorNumber}</TableCell>
+                <TableCell align="center">{car.motorPower}</TableCell>
+                <TableCell align="center">{car.flued}</TableCell>
+                <TableCell align="center">{car.yearManufacture}</TableCell>
+                <TableCell align="center">
+                  <i class="bx bx-edit-alt"></i>
+                  <i class="bx bx-trash"></i>
+                  <i class='bx bx-check' ></i>
+                </TableCell>
+              </TableRow>
+  ))
+
+ */
   return (
     <div>
       <TableContainer component={Paper}>
@@ -49,7 +80,8 @@ const CarsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {/* {renderedCars} */}
+           {rows.map((row) => (
               <TableRow
                 key={row.car_name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -69,7 +101,7 @@ const CarsTable = () => {
                   <i class='bx bx-check' ></i>
                 </TableCell>
               </TableRow>
-            ))}
+            ))} 
           </TableBody>
         </Table>
       </TableContainer>
