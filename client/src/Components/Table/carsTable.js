@@ -1,88 +1,73 @@
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   Paper,
-// } from '@mui/material';
-import {useSelector, useDispatch} from "react-redux";
-import {selectCarsList, loadCars} from "../../Redux/cars";
-import {useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCarsList, loadCars, deleteCars, updateCar } from '../../Redux/cars';
+import { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
+import AddCarModal from '../Modal/addCar';
 
 const CarsTable = () => {
   const cars = useSelector(selectCarsList);
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState(null);
+
+  const handleDelete = (id) => {
+    dispatch(deleteCars(id));
+  };
+
+  const handleEdit = (car) => {
+    setData(car);
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     dispatch(loadCars());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
-      <Table>
+      {isOpen && <AddCarModal isOpen={isOpen} setIsOpen={setIsOpen} data={data} />}
+      <Table striped bordered hover>
         <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
+          <tr>
+            <th>Marka </th>
+            <th align="center">Tip</th>
+            <th align="center">Broj sasije</th>
+            <th align="center">Broj motora</th>
+            <th align="center">Snaga motora</th>
+            <th align="center">Vrsta goriva</th>
+            <th align="center">Godina proizvodnje</th>
+            <th align="center">Akcije</th>
+          </tr>
         </thead>
         <tbody>
-        {
-          cars.map((car) => (
-            <tr key={1*new Date().getMilliseconds()}>
-              <td>{car.Marka}</td>
+          {cars.map((car) => (
+            <tr key={car.Id}>
+              <td>{car.CarModel}</td>
+              <td>{car.CarType} </td>
+              <td align="center">{car.CarNumber}</td>
+              <td align="center">{car.MotorNumber}</td>
+              <td align="center">
+                {`${car.MotorPower} ${car.MotorPowerUnit}`}
+              </td>
+              <td align="center">{car.Flue}</td>
+              <td align="center">{car.YearManufactured}</td>
+              <td align="center">
+                <i
+                  class="bx bx-edit-alt"
+                  onClick={() => handleEdit(car)}
+                ></i>
+                <i
+                  class="bx bx-trash"
+                  onClick={() => {
+                    handleDelete(car.Id);
+                  }}
+                ></i>
+                <i class="bx bx-check"></i>
+              </td>
             </tr>
-          ))
-        }
+          ))}
         </tbody>
       </Table>
-
-      {/* <TableContainer component={Paper}>*/}
-      {/*  <Table sx={{ minWidth: 650 }} aria-label="simple table">*/}
-      {/*    <TableHead>*/}
-      {/*      <TableRow>*/}
-      {/*        <TableCell>Marka </TableCell>*/}
-      {/*        <TableCell align="center">Tip</TableCell>*/}
-      {/*        <TableCell align="center">Broj sasije</TableCell>*/}
-      {/*        <TableCell align="center">Broj motora</TableCell>*/}
-      {/*        <TableCell align="center">Snaga motora</TableCell>*/}
-      {/*        <TableCell align="center">Vrsta goriva</TableCell>*/}
-      {/*        <TableCell align="center">Godina proizvodnje</TableCell>*/}
-      {/*        <TableCell align="center">Akcije</TableCell>*/}
-      {/*      </TableRow>*/}
-      {/*    </TableHead>*/}
-      {/*    <TableBody>*/}
-      {/*      /!* {renderedCars} *!/*/}
-      {/*      {*/}
-      {/*        cars.map((car) =>(*/}
-      {/*                          <TableRow*/}
-      {/*            key={car.Id}*/}
-      {/*            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}*/}
-      {/*          >*/}
-      {/*            <TableCell component="th" scope="row">*/}
-      {/*              {car.Marka}*/}
-      {/*            </TableCell>*/}
-      {/*            <TableCell align="center">{car.Marka}</TableCell>*/}
-      {/*            <TableCell align="center">{car.Tip}</TableCell>*/}
-      {/*            <TableCell align="center">{car.BrojSasije}</TableCell>*/}
-      {/*            <TableCell align="center">{car.BrojMotora}</TableCell>*/}
-      {/*            <TableCell align="center">{car.SnagaMotora}</TableCell>*/}
-      {/*            <TableCell align="center">{car.GodinaProizvodnje}</TableCell>*/}
-      {/*            <TableCell align="center">*/}
-      {/*              <i class="bx bx-edit-alt"></i>*/}
-      {/*              <i class="bx bx-trash"></i>*/}
-      {/*              <i class='bx bx-check' ></i>*/}
-      {/*            </TableCell>*/}
-      {/*          </TableRow>))*/}
-      {/*        }*/}
-      {/*    </TableBody>*/}
-      {/*  </Table>*/}
-      {/*</TableContainer>*/}
     </div>
   );
 };

@@ -4,7 +4,8 @@ const connection = getConnection();
 
 const fetchCars = async () => {
   return await new Promise((resolve) => {
-    connection.query('SELECT * FROM Vozilo', (error, result) => {
+    connection.query('SELECT * FROM Car', (error, result) => {
+      if (error) throw new Error({ message: error.message });
       resolve(result);
     });
   });
@@ -12,61 +13,57 @@ const fetchCars = async () => {
 
 const removeCar = async (id) => {
   return await new Promise((resolve) => {
-    connection.query(
-      'DELETE FROM Vozilo WHERE VoziloId = ?',
-      [id],
-      (error, result) => {
-        console.log(error);
-        console.log(result);
-        resolve(result);
-      }
-    );
+    connection.query('DELETE FROM Car WHERE Id = ?', [id], (error, result) => {
+      if (error) throw new Error({ message: error.message });
+      resolve(result);
+    });
   });
 };
 
 const addCar = async (car) => {
   return await new Promise((resolve) => {
-    connection.query('INSERT INTO vozilo SET ?', car, (error, result) => {
-      console.log(error);
-      console.log(result);
-      return resolve(result);
+    connection.query('INSERT INTO Car SET ?', car, (error, result) => {
+      if (error) throw new Error({ message: error.message });
+      resolve(result);
     });
   });
 };
 
 const editCar = async (id, car) => {
   const {
-    Marka,
-    Tip,
-    BrojSasije,
-    BrojMotora,
-    GodinaProizvodnje,
-    SnagaMotora,
-    VrstaGoriva,
+    CarModel,
+    CarType,
+    CarNumber,
+    MotorNumber,
+    MotorPowerUnit,
+    YearManufactured,
+    MotorPower,
+    Flue,
   } = car;
-  console.log('car', car);
-  return await new Promise((resolve) => {
-    connection.query(
-      'UPDATE VOZILO ' +
-        'SET Marka = ?, Tip = ?, BrojSasije = ?, BrojMotora = ?, GodinaProizvodnje = ?, SnagaMotora = ?, VrstaGoriva = ?' +
-        'WHERE VoziloId = ?',
-      [
-        Marka,
-        Tip,
-        BrojSasije,
-        BrojMotora,
-        GodinaProizvodnje,
-        SnagaMotora,
-        VrstaGoriva,
-        id,
-      ],
-      (error, result) => {
-        console.log(error);
-        console.log(result);
-        return resolve(result);
-      }
-    );
-  });
+
+  console.log('CAR', car);
+  // return await new Promise((resolve) => {
+  //   connection.query(
+  //     'UPDATE Car ' +
+  //       'SET CarModel = ?, CarType = ?, CarNumber = ?, MotorNumber = ?, MotorPowerUnit = ?, YearManufactured = ?, MotorPower = ?, Flue = ?' +
+  //       'WHERE Id = ?',
+  //     [
+  //       CarModel,
+  //       CarType,
+  //       CarNumber,
+  //       MotorNumber,
+  //       MotorPowerUnit,
+  //       YearManufactured,
+  //       MotorPower,
+  //       Flue,
+  //       id,
+  //     ],
+  //     (error, result) => {
+  //       if (error) throw new Error({ message: error.message });
+  //       resolve(result);
+  //     }
+  //   );
+  // });
 };
 
 export { fetchCars, removeCar, addCar, editCar };

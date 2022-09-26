@@ -1,21 +1,35 @@
-import { createReducer, createAsyncThunk } from "@reduxjs/toolkit";
-import {fetchCars} from './Api/index'
+import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchCars, removeCars, createCar, editCar } from './Api/index';
+
 
 /* Actions */
 
-export const loadCars = createAsyncThunk("cars/load", async () => {
-    const response = await fetchCars();
-    await response.data
+export const loadCars = createAsyncThunk('cars/load', async () => {
+  const response = await fetchCars();
 
-    return {cars : response.data}
-})
+  return { cars: response.data };
+});
+
+export const deleteCars = createAsyncThunk('cars/delete', async(id) => {
+  await removeCars(id);
+  return {id}
+});
+
+export const addCar = createAsyncThunk('cars/add', async(data) => {
+ const response = await createCar(data);
+ return {...data ,id: new Date (). getMilliseconds}
+});
+
+export const updateCar = createAsyncThunk('cars/update', async ({id, data}) => {
+  alert(data.CarType)
+  const response = await editCar(id, data);
+  return[...data];
+});
 
 /* Selectors */
 
 const selectCarsState = (rootState) => rootState.cars;
-export const selectCarsList = (rootState) =>
-  selectCarsState(rootState).cars;
-
+export const selectCarsList = (rootState) => selectCarsState(rootState).cars;
 
 /* Reducer */
 
@@ -29,7 +43,6 @@ const reducer = createReducer(initialState, {
   },
 
   [loadCars.fulfilled]: (state, action) => {
-    console.log("CARSS")
     state.carsLoading = false;
     state.cars = action.payload.cars;
   },
@@ -37,9 +50,18 @@ const reducer = createReducer(initialState, {
   [loadCars.rejected]: (state) => {
     state.carsLoading = false;
     state.error =
-      "Error, something went wrong. Contact support if problem persis";
+      'Error, something went wrong. Contact support if problem persis';
   },
-}
-);
+  [deleteCars.fulfilled]: (state, action) => {
+    state.cars = state.cars.filter(car => car.Id !== action.payload.id)
+  },
+  [addCar.fulfilled]: (state, action) => {
+    state.cars = state.cars.push(action.payload)
+  },
+  [updateCar.fulfilled]: (state, action) => {
+    state.cars = state.cars;
+  }
+
+});
 
 export default reducer;

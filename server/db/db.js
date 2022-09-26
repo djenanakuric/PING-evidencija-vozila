@@ -18,40 +18,41 @@ connection.query('create database if not exists ping', (err) => {
 });
 
 connection.query(
-  'create table if not exists Vozilo(\n' +
-    'VoziloId int not null AUTO_INCREMENT,\n' +
-    'Marka varchar(255) not null,\n' +
-    'Tip varchar(255) not null,\n' +
-    'BrojSasije varchar(255) not null,\n' +
-    'BrojMotora varchar(255) not null,\n' +
-    'SnagaMotora int not null,\n' +
-    'VrstaGoriva varchar(255) not null,\n' +
-    'GodinaProizvodnje int not null,\n' +
-    'primary key(VoziloId)\n' +
+  'create table if not exists Car(\n' +
+    'Id int not null AUTO_INCREMENT,\n' +
+    'CarModel varchar(255) not null,\n' +
+    'CarType varchar(255) not null,\n' +
+    'CarNumber varchar(50) not null,\n' +
+    'MotorNumber varchar(50) not null,\n' +
+    'MotorPower int not null,\n' +
+    'MotorPowerUnit varchar(5) not null,\n' +
+    'Flue varchar(25) not null,\n' +
+    'YearManufactured int not null,\n' +
+    'primary key(Id)\n' +
     ')',
   (err) => {
     if (err) throw err;
-    console.log("Table 'vozilo' created");
+    console.log("Table 'Car' created");
   }
 );
 
 connection.query(
-  'create table if not exists putni_nalog(' +
-    'PutniNalogId int AUTO_INCREMENT not null,\n' +
-    'DatumPolaska datetime not null,\n' +
-    'DatumPovratka datetime not null,\n' +
-    'MjestoPolaska text not null,\n' +
-    'MjestoPovratka text not null,\n' +
-    'BrojPutnika int not null,\n' +
-    'Vozac varchar(255) not null,\n' +
-    'VoziloId int not null,\n' +
-    'Akcija varchar(255) not null,\n'+
-    'primary key(PutniNalogId),\n' +
-    'foreign key (VoziloId) references vozilo(VoziloId)\n' +
+  'create table if not exists Travel_Application(' +
+    'Id int AUTO_INCREMENT not null,\n' +
+    'StartDate datetime not null,\n' +
+    'EndDate datetime not null,\n' +
+    'StartPoint text not null,\n' +
+    'EndPoint text not null,\n' +
+    'NumberOfPassengers int not null,\n' +
+    'Driver varchar(255) not null,\n' +
+    'CarId int not null,\n' +
+    'Status varchar(255) not null,\n'+
+    'primary key(Id),\n' +
+    'foreign key (CarId) references Car(Id)\n' +
     ')',
   (err) => {
     if (err) throw err;
-    console.log("Table 'putni_nalog' created");
+    console.log("Table 'Travel_Application' created");
   }
 );
 
