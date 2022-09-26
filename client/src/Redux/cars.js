@@ -21,7 +21,6 @@ export const addCar = createAsyncThunk('cars/add', async(data) => {
 });
 
 export const updateCar = createAsyncThunk('cars/update', async ({id, data}) => {
-  alert(data.CarType)
   const response = await editCar(id, data);
   return[...data];
 });
@@ -38,10 +37,6 @@ const initialState = {
 };
 
 const reducer = createReducer(initialState, {
-  [loadCars.pending]: (state) => {
-    state.carsLoading = true;
-  },
-
   [loadCars.fulfilled]: (state, action) => {
     state.carsLoading = false;
     state.cars = action.payload.cars;

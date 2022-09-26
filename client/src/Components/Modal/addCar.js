@@ -8,7 +8,7 @@ const AddCarModal = ({ isOpen, setIsOpen, data }) => {
   const closeModal = () => {
     setIsOpen(false);
   };
-
+  console.log(data);
   const dispatch = useDispatch();
   const [carModel, setCarModel] = useState(data !== null ? data.CarModel : '');
   const [carType, setCarType] = useState(data !== null ? data.CarType : '');
@@ -22,11 +22,11 @@ const AddCarModal = ({ isOpen, setIsOpen, data }) => {
     data !== null ? data.MotorPower : ''
   );
   const [motorPowerUnit, setMotorPowerUnit] = useState(
-    data !== null ? data.MotorPowerUnit : ''
+    data !== null ? data.MotorPowerUnit : 'kW'
   );
-  const [flue, setFlue] = useState(data !== null ? data.Flue : '');
+  const [flue, setFlue] = useState(data !== null ? data.Flue : 'Dizel');
   const [yearManufactured, setYearManufactured] = useState(
-    data !== null ? data.YearManufactured : 1911
+    data !== null ? data.YearManufactured : 1900
   );
 
   const onSaveCarClicked = (event) => {
@@ -40,16 +40,22 @@ const AddCarModal = ({ isOpen, setIsOpen, data }) => {
       Flue: flue,
       YearManufactured: yearManufactured,
     };
-
-    if(data.id !== null) dispatch(updateCar({id: data.Id, body}));
-    else dispatch(addCar(body));
+    if (data !== null && data?.Id !== null)
+      dispatch(updateCar({ id: data.Id, data: body }));
+    else {
+      dispatch(addCar(body));
+    }
 
     event.preventDefault();
   };
 
   return (
     <div>
-      <Modal isOpen={isOpen} onRequestClose={closeModal} appElement={document.getElementById('root')}>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        appElement={document.getElementById('root')}
+      >
         <div>
           <h4>
             {data !== null && data.Id !== null
@@ -120,6 +126,7 @@ const AddCarModal = ({ isOpen, setIsOpen, data }) => {
                   />
                   <Form.Select
                     onChange={(e) => setMotorPowerUnit(e.target.value)}
+                    value={motorPowerUnit}
                   >
                     <option value="kW">kW</option>
                     <option value="KS">KS</option>
@@ -129,8 +136,10 @@ const AddCarModal = ({ isOpen, setIsOpen, data }) => {
 
               <Form.Group as={Col} controlId="Flued" xs={3}>
                 <Form.Label>Vrsta goriva</Form.Label>
-                <Form.Select onChange={(e) => setFlue(e.target.value)}>
-                  <option>Odaberite vrstu goriva</option>
+                <Form.Select
+                  onChange={(e) => setFlue(e.target.value)}
+                  value={flue}
+                >
                   <option value="Dizel">Dizel</option>
                   <option value="Benzin">Benzin</option>
                   <option value="Plin">Plin</option>

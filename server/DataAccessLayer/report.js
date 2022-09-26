@@ -9,9 +9,6 @@ const fetchReports = async (datumPolaska, datumDolaska, voziloId) => {
     'WHERE pn.DatumPolaska >= ?  AND pn.DatumPovratka <= ?';
   query += voziloId != null ? ` AND pn.VoziloId = ${voziloId}` : ';';
 
-  console.log('datumPolaska', datumPolaska);
-  console.log('datumPovratka', datumDolaska);
-
   return await new Promise((resolve) => {
     connection.query(query, [datumPolaska, datumDolaska], (error, result) => {
       console.log('#dosaoda');
