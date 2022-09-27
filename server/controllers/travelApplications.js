@@ -24,7 +24,6 @@ const getExistTravelApplications = async (req, res) => {
       EndDate,
       CarId
     );
-    console.log(response);
     res.status(200).json({
        isExists: response[0].Count > 0,
     });
