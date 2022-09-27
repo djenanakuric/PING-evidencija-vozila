@@ -12,6 +12,7 @@ const ReportsTable = () => {
             <th align="center">Naziv vozila</th>
             <th align="center">Datum i vrijeme polaska</th>
             <th align="center">Datum i vrijeme povratka</th>
+            <th align="center">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@ const ReportsTable = () => {
               <td align="center">{report.Car}</td>
               <td align="center">{new Date(report.StartDate).toLocaleString()}</td>
               <td align="center">{new Date(report.EndDate).toLocaleString()}</td>
+              <td align="center">{report.Status}</td>
             </tr>
           ))}
         </tbody>

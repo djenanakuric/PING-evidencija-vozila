@@ -1,14 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCarsList, loadCars, deleteCars, updateCar } from '../../Redux/cars';
+import { selectCarsList, loadCars, deleteCars } from '../../Redux/cars';
 import { useEffect, useState } from 'react';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'react-bootstrap';
 import AddCarModal from '../Modal/addCar';
+import AddTravelApplicationModal from '../Modal/addTravelApplication';
 
 const CarsTable = () => {
   const cars = useSelector(selectCarsList);
+  const [carId, setCarId] = useState('');
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCarModal, setIsOpenIsOpenCarModal] = useState(false);
   const [data, setData] = useState(null);
+  const [isOpenTravelApplication, setIsOpenTravelApplication] = useState(false);
 
   const handleDelete = (id) => {
     dispatch(deleteCars(id));
@@ -16,7 +19,12 @@ const CarsTable = () => {
 
   const handleEdit = (car) => {
     setData(car);
-    setIsOpen(true);
+    setIsOpenIsOpenCarModal(true);
+  };
+
+  const handleCreateTravelApplication = (id) => {
+    setCarId(id);
+    setIsOpenTravelApplication(true);
   };
 
   useEffect(() => {
@@ -25,25 +33,39 @@ const CarsTable = () => {
 
   return (
     <div>
-      {isOpen && <AddCarModal isOpen={isOpen} setIsOpen={setIsOpen} data={data} />}
+      {isOpenCarModal && (
+        <AddCarModal
+          isOpen={isOpenCarModal}
+          setIsOpen={setIsOpenIsOpenCarModal}
+          data={data}
+        />
+      )}
+
+      {isOpenTravelApplication && (
+        <AddTravelApplicationModal
+          isOpen={isOpenTravelApplication}
+          setIsOpen={setIsOpenTravelApplication}
+          selectedCarId={carId}
+        />
+      )}
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Marka </th>
-            <th align="center">Tip</th>
-            <th align="center">Broj sasije</th>
-            <th align="center">Broj motora</th>
-            <th align="center">Snaga motora</th>
-            <th align="center">Vrsta goriva</th>
-            <th align="center">Godina proizvodnje</th>
-            <th align="center">Akcije</th>
+            <th>Tip</th>
+            <th>Broj sasije</th>
+            <th>Broj motora</th>
+            <th>Snaga motora</th>
+            <th>Vrsta goriva</th>
+            <th>Godina proizvodnje</th>
+            <th>Akcije</th>
           </tr>
         </thead>
         <tbody>
           {cars.map((car) => (
             <tr key={car.Id}>
-              <td>{car.CarModel}</td>
-              <td>{car.CarType} </td>
+              <td align="center">{car.CarModel}</td>
+              <td align="center">{car.CarType} </td>
               <td align="center">{car.CarNumber}</td>
               <td align="center">{car.MotorNumber}</td>
               <td align="center">
@@ -52,17 +74,28 @@ const CarsTable = () => {
               <td align="center">{car.Flue}</td>
               <td align="center">{car.YearManufactured}</td>
               <td align="center">
-                <i
-                  class="bx bx-edit-alt"
+                <Button
+                 variant="outline-primary"
                   onClick={() => handleEdit(car)}
-                ></i>
-                <i
-                  class="bx bx-trash"
+                >
+                  <i class="bx bx-edit-alt"></i>
+                </Button>
+
+                <Button
+                  variant="outline-danger"
                   onClick={() => {
                     handleDelete(car.Id);
                   }}
-                ></i>
-                <i class="bx bx-check"></i>
+                >
+                  <i class="bx bx-trash"></i>
+                </Button>
+
+                <Button
+                  variant="outline-success"
+                  onClick={() => handleCreateTravelApplication(car.Id)}
+                >
+                  <i class="bx bx-check"></i>
+                </Button>
               </td>
             </tr>
           ))}

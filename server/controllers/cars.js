@@ -10,7 +10,6 @@ const getCars = async (req, res) => {
 };
 
 const createCar = async (req, res) => {
-  console.log("BACKEEEDN")
   try {
     const newCar = await addCar(req.body);
     res.status(200).json(req.body);

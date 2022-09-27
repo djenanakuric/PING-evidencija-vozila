@@ -2,13 +2,20 @@ import Modal from 'react-modal';
 import { Form, Button, Col, Row, InputGroup } from 'react-bootstrap';
 import { addCar, updateCar } from '../../Redux/cars';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const AddCarModal = ({ isOpen, setIsOpen, data }) => {
   const closeModal = () => {
+    setCarModel('');
+    setCarNumber('');
+    setCarType('');
+    setMotorNumber('');
+    setMotorPower('')
+    setMotorPowerUnit('')
+    setFlue('Dizel');
+    setYearManufactured(1990)
     setIsOpen(false);
   };
-  console.log(data);
   const dispatch = useDispatch();
   const [carModel, setCarModel] = useState(data !== null ? data.CarModel : '');
   const [carType, setCarType] = useState(data !== null ? data.CarType : '');

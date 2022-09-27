@@ -2,7 +2,8 @@ import {
   addTravelApplication,
   fetchTravelApplication,
   editTravelApplication,
-  updateExpiredTravelApplication
+  updateExpiredTravelApplication,
+  checkIfTravelApplicationExist,
 } from '../DataAccessLayer/travelApplication.js';
 
 const getTravelApplications = async (req, res) => {
@@ -12,7 +13,23 @@ const getTravelApplications = async (req, res) => {
     res.status(200).json(travelApplication);
   } catch (error) {
     res.status(400).json({ message: error.message });
- }
+  }
+};
+
+const getExistTravelApplications = async (req, res) => {
+    try {
+    const { CarId, StartDate, EndDate } = req.query;
+    const response = await checkIfTravelApplicationExist(
+      StartDate,
+      EndDate,
+      CarId
+    );
+    res.status(200).json({
+       isExists: response[0].Count > 0,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 const createTravelApplication = async (req, res) => {
@@ -37,5 +54,6 @@ const updateTravelApplication = async (req, res) => {
 export {
   getTravelApplications,
   createTravelApplication,
-  updateTravelApplication
+  updateTravelApplication,
+  getExistTravelApplications,
 };

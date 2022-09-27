@@ -1,10 +1,14 @@
 import mysql from 'mysql';
+import dotenv from'dotenv';
+dotenv.config();
+
+const {HOST, USER, PASSWORD, DATABASE} = process.env;
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Qq121212.',
-  database: 'ping',
+  host: HOST,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE,
 });
 
 connection.connect((err) => {
@@ -48,7 +52,7 @@ connection.query(
     'CarId int not null,\n' +
     'Status varchar(255) not null,\n'+
     'primary key(Id),\n' +
-    'foreign key (CarId) references Car(Id)\n' +
+    'foreign key (CarId) references Car(Id) ON DELETE CASCADE\n' +
     ')',
   (err) => {
     if (err) throw err;

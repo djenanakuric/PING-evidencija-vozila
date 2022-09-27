@@ -2,50 +2,73 @@ import Modal from 'react-modal';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTravelApplication } from '../../Redux/travelApplications';
+import {checkIfTravelApplicationExist} from '../../Redux/Api'
+import {
+  addTravelApplication,
+} from '../../Redux/travelApplications';
 import { loadCars, selectCarsList } from '../../Redux/cars';
 
-const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
+const AddTravelApplicationModal = ({
+  isOpen,
+  setIsOpen,
+  selectedCarId = '',
+}) => {
   const closeModal = () => {
     setIsOpen(false);
+    setCarId('');
+    setEndDate('');
+    setStartDate('');
+    setStartDate('');
+    setEndDate('')
+    setDriver('')
+    setNumberOfPassengers(0);
+    setIsExist(false);
   };
   const cars = useSelector(selectCarsList);
 
-  const today = new Date();
-  today.setSeconds(0, 0);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadCars())
-  }, [dispatch]); 
+    dispatch(loadCars());
+  }, [dispatch]);
 
-  const [carId, setCarId] = useState('');
+ const [carId, setCarId] = useState(selectedCarId);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [startPoint, setStartPoint] = useState('');
   const [endPoint, setEndPoint] = useState('');
   const [driver, setDriver] = useState('');
-  const [numberOfPassengers, setNumberOfPassengers] = useState('');
-  const [status, setStatus] = useState('evidentiran');
+  const [numberOfPassengers, setNumberOfPassengers] = useState(0);
+  const [isExist, setIsExist] = useState(false)
 
-  const onSaveTravelApplicationClicked = (event) => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if(carId !== '' && startDate !== '' && endDate !== '') {
+        const response = await checkIfTravelApplicationExist(startDate, endDate, carId)
+        setIsExist(response.data.isExists)
+      }
+    }
+    fetchData().catch(console.error);
+
+  },[carId, startDate, endDate])
+
+  const onSaveTravelApplicationClicked = () => {
     const body = {
       CarId: carId,
       StartDate: startDate,
       EndDate: endDate,
-      StartPoint: startDate,
+      StartPoint: startPoint,
       EndPoint: endPoint,
       Driver: driver,
       NumberOfPassengers: numberOfPassengers,
-      Status: status,
+      Status: 'Evidentiran',
     };
-    
+
     dispatch(addTravelApplication(body));
   };
 
-  
-
-  return (
+    return (
     <div>
       <Modal
         isOpen={isOpen}
@@ -56,7 +79,7 @@ const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
           <h4>Dodaj putni nalog</h4>
         </div>
         <div>
-          <Form onSubmit={(e) => onSaveTravelApplicationClicked()}>
+          <Form onSubmit={() => onSaveTravelApplicationClicked()}>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="CarModel" xs={8}>
                 <Form.Label>Vozilo</Form.Label>
@@ -65,7 +88,9 @@ const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
                   value={carId}>
                   <option>Odaberite vozilo</option>
                   {cars.map((car) => (
-                    <option key={car.Id} value={car.Id}>{car.CarModel}</option>
+                    <option key={car.Id} value={car.Id}>
+                      {`${car.CarModel} ${car.CarType}`}
+                    </option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -104,9 +129,13 @@ const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
 
               <Form.Group as={Col} controlId="Finish" xs={4}>
                 <Form.Label>Destinacija</Form.Label>
-                <Form.Control type="text" placeholder="Unesite destinaciju" onChange={(e) => setEndPoint(e.target.value)}
+                <Form.Control
+                  type="text"
+                  placeholder="Unesite destinaciju"
+                  onChange={(e) => setEndPoint(e.target.value)}
                   required
-                  value={endPoint}/>
+                  value={endPoint}
+                />
               </Form.Group>
             </Row>
 
@@ -134,10 +163,12 @@ const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
                 />
               </Form.Group>
             </Row>
-
+            {isExist && <div className="alert alert-danger" role="alert">
+              Vozilo je već rezervisano
+            </div>}
             <Row>
               <Form.Group as={Col} controlId="SaveAndClose" xs={3}>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={isExist}>
                   Spremi
                 </Button>
                 <Button variant="danger" onClick={closeModal}>
@@ -146,6 +177,7 @@ const AddTravelApplicationModal = ({ isOpen, setIsOpen }) => {
               </Form.Group>
             </Row>
           </Form>
+
         </div>
       </Modal>
     </div>

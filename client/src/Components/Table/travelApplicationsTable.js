@@ -26,6 +26,7 @@ const TravelApplicationsTable = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
+            <th align={"center"}>Vozilo</th>
             <th align="center">Datum i vrijeme polaska</th>
             <th align="center">Datum i vrijeme dolaska</th>
             <th align="center">Polazak</th>
@@ -38,26 +39,33 @@ const TravelApplicationsTable = () => {
         <tbody>
           {travelApplications.map((tApp) => (
             <tr key={tApp.Id}>
-              <td align="center">{new Date(tApp.StartDate).toLocaleString()}</td>
+              <td>{tApp.Car}</td>
+              <td align="center">
+                {new Date(tApp.StartDate).toLocaleString()}
+              </td>
               <td align="center">{new Date(tApp.EndDate).toLocaleString()}</td>
               <td align="center">{tApp.StartPoint}</td>
               <td align="center">{tApp.EndPoint}</td>
               <td align="center">{tApp.Driver}</td>
               <td align="center">{tApp.NumberOfPassengers}</td>
               <td align="center">
-                <Form.Select
-                  disabled = {(tApp.Status === 'Odbijen' || tApp.Status === 'Završen' || tApp.Status === 'Automatski završen') }
-                  onChange={(e) =>
-                    ChangeStatus({ status: e.target.value, id: tApp.Id })
-                  }
-                  value={tApp.Status}
-                >
-                  <option value="Automatski završen" disabled>Automatski završen</option>
-                  <option value="Evidentiran">Evidentiran</option>
-                  <option value="Potvđen">Potvđen</option>
-                  <option value="Odbijen">Odbijen</option>
-                  <option value="Završen">Završen</option>
-                </Form.Select>
+                {tApp.Status === 'Odbijen' ||
+                tApp.Status === 'Završen' ||
+                tApp.Status === 'Automatski završen' ? (
+                  <p>{tApp.Status}</p>
+                ) : (
+                  <Form.Select
+                    onChange={(e) =>
+                      ChangeStatus({ status: e.target.value, id: tApp.Id })
+                    }
+                    value={tApp.Status}
+                  >
+                    <option value="Evidentiran">Evidentiran</option>
+                    <option value="Potvrđen">Potvrđen</option>
+                    <option value="Odbijen">Odbijen</option>
+                    <option value="Završen">Završen</option>
+                  </Form.Select>
+                )}
               </td>
             </tr>
           ))}

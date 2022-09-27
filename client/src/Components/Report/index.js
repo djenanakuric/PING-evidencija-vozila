@@ -58,7 +58,7 @@ const Report = () => {
                 <option value={''}>Sva vozila</option>
                 {cars.map((car) => (
                   <option key={car.Id} value={car.Id}>
-                    {car.CarModel}
+                    {`${car.CarModel} ${car.CarType}`}
                   </option>
                 ))}
               </Form.Select>

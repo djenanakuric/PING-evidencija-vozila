@@ -1,7 +1,5 @@
 import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchCars, removeCars, createCar, editCar } from './Api/index';
-
-
 /* Actions */
 
 export const loadCars = createAsyncThunk('cars/load', async () => {
@@ -10,20 +8,23 @@ export const loadCars = createAsyncThunk('cars/load', async () => {
   return { cars: response.data };
 });
 
-export const deleteCars = createAsyncThunk('cars/delete', async(id) => {
+export const deleteCars = createAsyncThunk('cars/delete', async (id) => {
   await removeCars(id);
-  return {id}
+  return { id };
 });
 
-export const addCar = createAsyncThunk('cars/add', async(data) => {
- const response = await createCar(data);
- return {...data ,id: new Date (). getMilliseconds}
+export const addCar = createAsyncThunk('cars/add', async (data) => {
+  await createCar(data);
+  return { ...data };
 });
 
-export const updateCar = createAsyncThunk('cars/update', async ({id, data}) => {
-  const response = await editCar(id, data);
-  return[...data];
-});
+export const updateCar = createAsyncThunk(
+  'cars/update',
+  async ({ id, data }) => {
+    await editCar(id, data);
+    return [...data];
+  }
+);
 
 /* Selectors */
 
@@ -48,15 +49,14 @@ const reducer = createReducer(initialState, {
       'Error, something went wrong. Contact support if problem persis';
   },
   [deleteCars.fulfilled]: (state, action) => {
-    state.cars = state.cars.filter(car => car.Id !== action.payload.id)
+    state.cars = state.cars.filter((car) => car.Id !== action.payload.id);
   },
   [addCar.fulfilled]: (state, action) => {
-    state.cars = state.cars.push(action.payload)
+    state.cars = state.cars.push(action.payload);
   },
   [updateCar.fulfilled]: (state, action) => {
     state.cars = state.cars;
-  }
-
+  },
 });
 
 export default reducer;

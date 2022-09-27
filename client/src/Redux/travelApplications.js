@@ -25,8 +25,8 @@ export const loadTravelApplications = createAsyncThunk(
 export const addTravelApplication = createAsyncThunk(
   'travelApplications/add',
   async (data) => {
-    const response = await createTravelApplication(data);
-    return { ...data, id: new Date().getMilliseconds };
+    await createTravelApplication(data);
+    return { ...data };
   }
 );
 
@@ -58,7 +58,7 @@ const reducer = createReducer(initialState, {
   [updateTravelApplication.fulfilled]: (state, action) => {
     const { id, Status } = action.payload;
 
-    state.travelApplications = state.travelApplications.map((tApp) => 
+    state.travelApplications = state.travelApplications.map((tApp) =>
       (tApp.Id === id ? { ...tApp, Status } : tApp)
     );
   },
