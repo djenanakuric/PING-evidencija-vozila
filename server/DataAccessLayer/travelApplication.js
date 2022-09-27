@@ -18,21 +18,21 @@ const fetchTravelApplication = async () => {
 };
 
 const checkIfTravelApplicationExist = async (StartDate, EndDate, CarId) => {
-return await new Promise((resolve) => {
+  return await new Promise((resolve) => {
     connection.query(
-      'SELECT COUNT (*) as Count \n'+
-      'FROM Travel_Application ta \n'+
-      'WHERE ta.CarId = ? AND ((ta.StartDate BETWEEN ? AND ? ) OR (ta.EndDate BETWEEN ? AND ? )) AND \n' +
-      'ta.Status not in ("Završen","Odbijen", "Automatski završen")',
-      [CarId, StartDate, EndDate, StartDate, EndDate],
+      'SELECT COUNT (*) as Count \n' +
+        'FROM Travel_Application ta \n' +
+        'WHERE ta.CarId = ? AND ((ta.StartDate BETWEEN ? AND ? ) OR (ta.EndDate BETWEEN ? AND ? ) \n' +
+        'or (? BETWEEN ta.StartDate AND ta.EndDate) OR (? BETWEEN ta.StartDate AND ta.EndDate)) \n' +
+        'AND ta.Status not in ("Završen","Odbijen", "Automatski završen")',
+      [CarId, StartDate, EndDate, StartDate, EndDate, StartDate, EndDate],
       (error, result) => {
         if (error) console.error(error);
         resolve(result);
       }
-
-    )
-  })
-}
+    );
+  });
+};
 
 const addTravelApplication = async (travelApplication) => {
   return await new Promise((resolve) => {
@@ -61,7 +61,6 @@ const editTravelApplication = async (id, data) => {
   });
 };
 
-
 const updateExpiredTravelApplication = async () => {
   return await new Promise((resolve) => {
     connection.query(
@@ -76,5 +75,10 @@ const updateExpiredTravelApplication = async () => {
   });
 };
 
-
-export { fetchTravelApplication, addTravelApplication, editTravelApplication, updateExpiredTravelApplication, checkIfTravelApplicationExist };
+export {
+  fetchTravelApplication,
+  addTravelApplication,
+  editTravelApplication,
+  updateExpiredTravelApplication,
+  checkIfTravelApplicationExist,
+};

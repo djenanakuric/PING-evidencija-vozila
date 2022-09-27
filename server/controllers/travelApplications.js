@@ -17,13 +17,14 @@ const getTravelApplications = async (req, res) => {
 };
 
 const getExistTravelApplications = async (req, res) => {
-    try {
+   try {
     const { CarId, StartDate, EndDate } = req.query;
     const response = await checkIfTravelApplicationExist(
       StartDate,
       EndDate,
       CarId
     );
+    console.log(response);
     res.status(200).json({
        isExists: response[0].Count > 0,
     });

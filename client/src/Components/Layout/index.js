@@ -7,6 +7,7 @@ const AppLayout = () => {
     }}>
         <Sidebar />
         <Outlet />
+        
     </div>;
 };
 
