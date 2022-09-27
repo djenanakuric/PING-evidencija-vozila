@@ -2,18 +2,16 @@ import { getConnection } from '../db/db.js';
 
 const connection = getConnection();
 
-const fetchReports = async (datumPolaska, datumDolaska, voziloId) => {
+const fetchReports = async (StartDate, EndDate, CarId) => {
   let query =
-    "SELECT pn.DatumPolaska, pn.DatumPovratka, CONCAT(v.Marka,' ',v.tip) AS vozilo " +
-    'FROM putni_nalog AS pn INNER JOIN ping.vozilo AS v ON pn.VoziloId = v.VoziloId ' +
-    'WHERE pn.DatumPolaska >= ?  AND pn.DatumPovratka <= ?';
-  query += voziloId != null ? ` AND pn.VoziloId = ${voziloId}` : ';';
+    "SELECT pn.StartDate, pn.EndDate, CONCAT(c.CarModel,' ',c.CarType) AS Car " +
+    "FROM Travel_Application AS pn INNER JOIN Car AS c ON pn.CarId = c.Id " +
+    "WHERE pn.StartDate >= ?  AND pn.EndDate <= ? AND pn.Status != 'Odbijen' AND pn.Status != 'Završen'";
+  query += !CarId ? ';': ` AND pn.CarId = ${CarId}`;
 
   return await new Promise((resolve) => {
-    connection.query(query, [datumPolaska, datumDolaska], (error, result) => {
-      console.log('#dosaoda');
-      console.log(error);
-      console.log(result);
+    connection.query(query, [StartDate, EndDate], (error, result) => {
+      if (error) throw error;
       resolve(result);
     });
   });

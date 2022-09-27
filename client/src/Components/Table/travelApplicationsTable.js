@@ -38,20 +38,21 @@ const TravelApplicationsTable = () => {
         <tbody>
           {travelApplications.map((tApp) => (
             <tr key={tApp.Id}>
-              <td>{tApp.StartDate}</td>
-              <td>{tApp.EndDate}</td>
-              <td>{tApp.StartPoint}</td>
-              <td>{tApp.EndPoint}</td>
-              <td>{tApp.Driver}</td>
-              <td>{tApp.NumberOfPassengers}</td>
-              <td>
+              <td align="center">{new Date(tApp.StartDate).toLocaleString()}</td>
+              <td align="center">{new Date(tApp.EndDate).toLocaleString()}</td>
+              <td align="center">{tApp.StartPoint}</td>
+              <td align="center">{tApp.EndPoint}</td>
+              <td align="center">{tApp.Driver}</td>
+              <td align="center">{tApp.NumberOfPassengers}</td>
+              <td align="center">
                 <Form.Select
-                  disabled = {(tApp.Status === 'Odbijen' || tApp.Status === 'Završen') }
+                  disabled = {(tApp.Status === 'Odbijen' || tApp.Status === 'Završen' || tApp.Status === 'Automatski završen') }
                   onChange={(e) =>
                     ChangeStatus({ status: e.target.value, id: tApp.Id })
                   }
                   value={tApp.Status}
                 >
+                  <option value="Automatski završen" disabled>Automatski završen</option>
                   <option value="Evidentiran">Evidentiran</option>
                   <option value="Potvđen">Potvđen</option>
                   <option value="Odbijen">Odbijen</option>

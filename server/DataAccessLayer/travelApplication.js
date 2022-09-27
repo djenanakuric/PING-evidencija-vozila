@@ -1,5 +1,4 @@
 import { getConnection } from '../db/db.js';
-
 const connection = getConnection();
 
 const fetchTravelApplication = async () => {
@@ -19,7 +18,6 @@ const fetchTravelApplication = async () => {
 };
 
 const addTravelApplication = async (travelApplication) => {
-  console.log(travelApplication);
   return await new Promise((resolve) => {
     connection.query(
       'INSERT INTO Travel_Application SET ?',
@@ -47,4 +45,20 @@ const editTravelApplication = async (id, data) => {
   });
 };
 
-export { fetchTravelApplication, addTravelApplication, editTravelApplication };
+
+const updateExpiredTravelApplication = async () => {
+  return await new Promise((resolve) => {
+    connection.query(
+      'UPDATE travel_application ' +
+        'SET Status = "Automatski završen" ' +
+        'WHERE Status NOT IN ("Odbijen", "Završen") AND EndDate <= CURRENT_TIMESTAMP()',
+      (error, result) => {
+        if (error) console.error(error);
+        resolve(result);
+      }
+    );
+  });
+};
+
+
+export { fetchTravelApplication, addTravelApplication, editTravelApplication, updateExpiredTravelApplication };
